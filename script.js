@@ -1,4 +1,4 @@
-// === moveing betwin section  =======
+// === MOVING BETWING SECTION=======
 
 const sections = document.querySelectorAll("section[data-screen]");
 const navButtons = document.querySelectorAll(".sidebar__btn");
@@ -26,4 +26,14 @@ navButtons.forEach((btn) => {
 });
 
 
-showSection(localStorage.getItem("currentScreen") || "stats");
+showSection(localStorage.getItem("currentScreen") || "stats"); // 
+// === DOM ELEMENTS ===========
+
+const addEventForm = document.getElementById("event-form");
+const formErrors = document.getElementById("form-errors");
+const variantsList = document.getElementById("variants-list");
+const addVariantBtn = document.getElementById("btn-add-variant");
+
+// empty arrays for events and archive
+let events = [];
+let archive = [];
