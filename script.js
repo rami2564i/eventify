@@ -1,4 +1,4 @@
-// === MOVING BETWING SECTION=======
+// === MOVING BETWING section=======
 
 const sections = document.querySelectorAll("section[data-screen]");
 const navButtons = document.querySelectorAll(".sidebar__btn");
@@ -37,3 +37,25 @@ const addVariantBtn = document.getElementById("btn-add-variant");
 // empty arrays for events and archive
 let events = [];
 let archive = [];
+
+// Basic form submit skeleton (no validation yet)
+addEventForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    console.log("Form submitted"); // placeholder
+});
+// === Validation Function ====
+
+function validateEvent(data) {
+    const errors = [];
+    if (!data.title.trim()) errors.push("Title is required.");
+    else if (data.title.trim().length < 3)
+        errors.push("Title must be at least 3 characters.");
+
+    if (!Number.isInteger(data.seats) || data.seats <= 0)
+        errors.push("Seats must be a positive integer.");
+
+    if (isNaN(data.price) || data.price < 0)
+        errors.push("Price must be a positive number.");
+
+    return errors;
+}
