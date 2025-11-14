@@ -59,3 +59,28 @@ function validateEvent(data) {
 
     return errors;
 }
+
+// Modify form submit to include validation
+addEventForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const eventData = {
+        title: document.getElementById("event-title").value.trim(),
+        image: document.getElementById("event-image").value.trim(),
+        description: document.getElementById("event-description").value.trim(),
+        seats: parseInt(document.getElementById("event-seats").value),
+        price: parseFloat(document.getElementById("event-price").value),
+        variants: [],
+    };
+
+    const errors = validateEvent(eventData);
+    if (errors.length > 0) {
+        formErrors.classList.remove("is-hidden");
+        formErrors.innerHTML = errors.join("<br>");
+        return;
+    }
+
+    formErrors.classList.add("is-hidden");
+    formErrors.innerHTML = "";
+    console.log("Validated event:", eventData);
+});
