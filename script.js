@@ -103,3 +103,9 @@ function createVariantRow() {
     `;
     return div;
 }
+
+// Add new variant
+addVariantBtn.addEventListener("click", () => {
+    const newRow = createVariantRow();
+    variantsList.appendChild(newRow);
+});
