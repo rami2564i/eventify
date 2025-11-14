@@ -116,3 +116,50 @@ variantsList.addEventListener("click", (e) => {
         e.target.parentElement.remove();
     }
 });
+// === Add Event ========
+
+addEventForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const eventData = {
+        id: Date.now(),
+        title: document.getElementById("event-title").value.trim(),
+        image: document.getElementById("event-image").value.trim(),
+        description: document.getElementById("event-description").value.trim(),
+        seats: parseInt(document.getElementById("event-seats").value),
+        price: parseFloat(document.getElementById("event-price").value),
+        variants: [],
+    };
+
+    // Collect variants
+    const variantRows = document.querySelectorAll(".variant-row");
+    variantRows.forEach((row) => {
+        const name = row.querySelector(".variant-row__name").value.trim();
+        const qty = parseInt(row.querySelector(".variant-row__qty").value);
+        const value = parseFloat(row.querySelector(".variant-row__value").value);
+        const type = row.querySelector(".variant-row__type").value;
+
+        if (name && !isNaN(qty) && !isNaN(value)) {
+            eventData.variants.push({ name, qty, value, type });
+        }
+    });
+
+    // Validate
+    const errors = validateEvent(eventData);
+    if (errors.length > 0) {
+        formErrors.classList.remove("is-hidden");
+        formErrors.innerHTML = errors.join("<br>");
+        return;
+    }
+
+    // Add event to array
+    events.push(eventData);
+
+    // Reset form
+    addEventForm.reset();
+    variantsList.innerHTML = "";
+    formErrors.classList.add("is-hidden");
+    formErrors.innerHTML = "";
+
+    alert(`Event "${eventData.title}" added successfully!`);
+});
