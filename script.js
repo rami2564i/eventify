@@ -109,3 +109,10 @@ addVariantBtn.addEventListener("click", () => {
     const newRow = createVariantRow();
     variantsList.appendChild(newRow);
 });
+
+// Remove variant
+variantsList.addEventListener("click", (e) => {
+    if (e.target.classList.contains("variant-row__remove")) {
+        e.target.parentElement.remove();
+    }
+});
