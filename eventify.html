@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eventify — Gestion d'Événements</title>
+    <link rel="stylesheet" href="eventify.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+
+    <!-- ═══════════════════════════════════════════════════ SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar__brand">
+            <span class="sidebar__logo">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <rect x="2" y="2" width="10" height="10" rx="2" fill="var(--accent)"/>
+          <rect x="16" y="2" width="10" height="10" rx="2" fill="var(--accent)" opacity=".5"/>
+          <rect x="2" y="16" width="10" height="10" rx="2" fill="var(--accent)" opacity=".5"/>
+          <rect x="16" y="16" width="10" height="10" rx="2" fill="var(--accent)"/>
+        </svg>
+      </span>
+            <span class="sidebar__name">Eventify</span>
+        </div>
+
+        <nav class="sidebar__nav">
+            <button class="nav-btn active" data-screen="dashboard">
+        <span class="nav-btn__icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+        </span>
+        <span class="nav-btn__label">Dashboard</span>
+      </button>
+
+            <button class="nav-btn" data-screen="add-event">
+        <span class="nav-btn__icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+          </svg>
+        </span>
+        <span class="nav-btn__label">Ajouter un événement</span>
+      </button>
+
+            <button class="nav-btn" data-screen="events-list">
+        <span class="nav-btn__icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/>
+            <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+          </svg>
+        </span>
+        <span class="nav-btn__label">Liste des événements</span>
+      </button>
+
+            <button class="nav-btn" data-screen="archive">
+        <span class="nav-btn__icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/>
+            <line x1="10" y1="12" x2="14" y2="12"/>
+          </svg>
+        </span>
+        <span class="nav-btn__label">Archive</span>
+      </button>
+        </nav>
+
+        <div class="sidebar__footer">
+            <div class="sidebar__avatar">
+                <span>AD</span>
+            </div>
+            <div class="sidebar__user">
+                <span class="sidebar__user-name">Admin</span>
+                <span class="sidebar__user-role">Gestionnaire</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ═══════════════════════════════════════════════════ MAIN -->
+    <main class="main" id="main">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+            <button class="topbar__menu-btn" id="sidebar-toggle" aria-label="Toggle sidebar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+            <h1 class="topbar__title" id="topbar-title">Dashboard</h1>
+            <div class="topbar__actions">
+                <button class="btn btn--ghost btn--sm" id="topbar-cta" data-screen="add-event">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          Nouvel événement
+        </button>
+            </div>
+        </header>
+
+        <!-- ───────────────────────── SCREEN: DASHBOARD -->
+        <section class="screen is-visible" id="screen-dashboard">
+            <div class="screen__header">
+                <h2 class="screen__title">Vue d'ensemble</h2>
+                <p class="screen__subtitle">Statistiques générales de vos événements</p>
+            </div>
+
+            <!-- STAT CARDS -->
+            <div class="stats-grid" id="stats-grid">
+                <div class="stat-card stat-card--accent">
+                    <div class="stat-card__icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+                    </div>
+                    <div class="stat-card__body">
+                        <span class="stat-card__label">Total événements</span>
+                        <span class="stat-card__value" id="stat-total">0</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card__icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+                    </div>
+                    <div class="stat-card__body">
+                        <span class="stat-card__label">Total de places</span>
+                        <span class="stat-card__value" id="stat-seats">0</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card__icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+                    </div>
+                    <div class="stat-card__body">
+                        <span class="stat-card__label">Revenu théorique</span>
+                        <span class="stat-card__value" id="stat-revenue">0 MAD</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card__icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+                    </div>
+                    <div class="stat-card__body">
+                        <span class="stat-card__label">Archivés</span>
+                        <span class="stat-card__value" id="stat-archived">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CHART AREA (BONUS) -->
+            <div class="chart-section">
+                <div class="chart-card">
+                    <div class="chart-card__header">
+                        <h3 class="chart-card__title">Répartition par catégorie</h3>
+                        <span class="badge badge--outline" id="chart-count-label">— événements</span>
+                    </div>
+                    <div class="chart-card__body">
+                        <canvas id="chart-categories" width="600" height="220"></canvas>
+                        <p class="chart-empty" id="chart-empty">Aucune donnée à afficher. Ajoutez des événements.</p>
+                    </div>
+                </div>
+
+                <div class="recent-card">
+                    <div class="chart-card__header">
+                        <h3 class="chart-card__title">Événements récents</h3>
+                    </div>
+                    <ul class="recent-list" id="recent-list">
+                        <li class="recent-list__empty">Aucun événement pour l'instant.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ───────────────────────── SCREEN: ADD EVENT -->
+        <section class="screen" id="screen-add-event">
+            <div class="screen__header">
+                <h2 class="screen__title" id="form-screen-title">Ajouter un événement</h2>
+                <p class="screen__subtitle">Remplissez les informations ci-dessous</p>
+            </div>
+
+            <div class="form-layout">
+                <form class="event-form" id="event-form" novalidate>
+                    <!-- Hidden edit id -->
+                    <input type="hidden" id="edit-id" value="" />
+
+                    <div class="form-grid">
+                        <!-- Titre -->
+                        <div class="form-group form-group--full">
+                            <label class="form-label" for="field-title">
+                Titre de l'événement <span class="required">*</span>
+              </label>
+                            <input class="form-control" type="text" id="field-title" placeholder="Ex: Festival de Jazz de Tanger" />
+                            <span class="form-error" id="err-title"></span>
+                        </div>
+
+                        <!-- Catégorie -->
+                        <div class="form-group">
+                            <label class="form-label" for="field-category">Catégorie <span class="required">*</span></label>
+                            <select class="form-control form-select" id="field-category">
+                <option value="">Choisir une catégorie</option>
+                <option value="Musique">Musique</option>
+                <option value="Sport">Sport</option>
+                <option value="Technologie">Technologie</option>
+                <option value="Culture">Culture</option>
+                <option value="Gastronomie">Gastronomie</option>
+                <option value="Art">Art</option>
+                <option value="Éducation">Éducation</option>
+                <option value="Autre">Autre</option>
+              </select>
+                            <span class="form-error" id="err-category"></span>
+                        </div>
+
+                        <!-- Date -->
+                        <div class="form-group">
+                            <label class="form-label" for="field-date">Date <span class="required">*</span></label>
+                            <input class="form-control" type="date" id="field-date" />
+                            <span class="form-error" id="err-date"></span>
+                        </div>
+
+                        <!-- Lieu -->
+                        <div class="form-group">
+                            <label class="form-label" for="field-location">Lieu <span class="required">*</span></label>
+                            <input class="form-control" type="text" id="field-location" placeholder="Ex: Tanger, Maroc" />
+                            <span class="form-error" id="err-location"></span>
+                        </div>
+
+                        <!-- Places -->
+                        <div class="form-group">
+                            <label class="form-label" for="field-seats">Nombre de places <span class="required">*</span></label>
+                            <input class="form-control" type="number" id="field-seats" min="1" placeholder="Ex: 500" />
+                            <span class="form-error" id="err-seats"></span>
+                        </div>
+
+                        <!-- Prix -->
+                        <div class="form-group">
+                            <label class="form-label" for="field-price">Prix unitaire (MAD) <span class="required">*</span></label>
+                            <input class="form-control" type="number" id="field-price" min="0" step="0.01" placeholder="Ex: 150" />
+                            <span class="form-error" id="err-price"></span>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="form-group form-group--full">
+                            <label class="form-label" for="field-desc">Description</label>
+                            <textarea class="form-control form-textarea" id="field-desc" rows="3" placeholder="Description courte de l'événement…"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- VARIANTES -->
+                    <div class="variants-section">
+                        <div class="variants-header">
+                            <h3 class="variants-title">Variantes / Billets</h3>
+                            <button type="button" class="btn btn--ghost btn--sm" id="add-variant-btn">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                  <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Ajouter une variante
+              </button>
+                        </div>
+                        <div class="variants-list" id="variants-list">
+                            <!-- Variants injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- FORM ACTIONS -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn--ghost" id="form-cancel-btn">Annuler</button>
+                        <button type="submit" class="btn btn--primary" id="form-submit-btn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              Enregistrer
+            </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- ───────────────────────── SCREEN: EVENTS LIST -->
+        <section class="screen" id="screen-events-list">
+            <div class="screen__header">
+                <h2 class="screen__title">Événements</h2>
+                <p class="screen__subtitle">Liste de tous vos événements actifs</p>
+            </div>
+
+            <!-- TOOLBAR -->
+            <div class="table-toolbar">
+                <div class="search-box">
+                    <svg class="search-box__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+                    <input class="search-box__input" type="text" id="search-input" placeholder="Rechercher un événement…" />
+                    <button class="search-box__clear" id="search-clear" aria-label="Effacer">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+                </div>
+                <div class="toolbar-right">
+                    <select class="form-control form-select sort-select" id="sort-select">
+            <option value="">Trier par…</option>
+            <option value="title-asc">Titre A→Z</option>
+            <option value="title-desc">Titre Z→A</option>
+            <option value="price-asc">Prix ↑</option>
+            <option value="price-desc">Prix ↓</option>
+            <option value="date-asc">Date ↑</option>
+            <option value="date-desc">Date ↓</option>
+          </select>
+                    <span class="result-count" id="result-count">0 événement(s)</span>
+                </div>
+            </div>
+
+            <!-- TABLE -->
+            <div class="table-wrapper">
+                <table class="data-table" id="events-table">
+                    <thead>
+                        <tr>
+                            <th data-sort="title" class="sortable">
+                                Titre
+                                <svg class="sort-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
+                            </th>
+                            <th>Catégorie</th>
+                            <th data-sort="date" class="sortable">
+                                Date
+                                <svg class="sort-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
+                            </th>
+                            <th>Lieu</th>
+                            <th data-sort="seats" class="sortable">
+                                Places
+                                <svg class="sort-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
+                            </th>
+                            <th data-sort="price" class="sortable">
+                                Prix
+                                <svg class="sort-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
+                            </th>
+                            <th class="actions-col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="events-tbody">
+                        <!-- Rows injected by JS -->
+                    </tbody>
+                </table>
+
+                <div class="table-empty" id="events-empty">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            <line x1="9" y1="15" x2="15" y2="15"/>
+          </svg>
+                    <p>Aucun événement trouvé.</p>
+                    <button class="btn btn--primary btn--sm" data-screen="add-event">Créer un événement</button>
+                </div>
+            </div>
+
+            <!-- PAGINATION -->
+            <div class="pagination" id="pagination">
+                <button class="pagination__btn" id="prev-page" aria-label="Page précédente">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+                <div class="pagination__pages" id="pagination-pages"></div>
+                <button class="pagination__btn" id="next-page" aria-label="Page suivante">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+            </div>
+        </section>
+
+        <!-- ───────────────────────── SCREEN: ARCHIVE -->
+        <section class="screen" id="screen-archive">
+            <div class="screen__header">
+                <h2 class="screen__title">Archive</h2>
+                <p class="screen__subtitle">Événements supprimés — restaurez-les si nécessaire</p>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="data-table data-table--muted" id="archive-table">
+                    <thead>
+                        <tr>
+                            <th>Titre</th>
+                            <th>Catégorie</th>
+                            <th>Date</th>
+                            <th>Lieu</th>
+                            <th>Places</th>
+                            <th>Prix</th>
+                            <th class="actions-col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="archive-tbody">
+                        <!-- Rows injected by JS -->
+                    </tbody>
+                </table>
+
+                <div class="table-empty" id="archive-empty">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+            <polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/>
+          </svg>
+                    <p>L'archive est vide.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    <!-- /main -->
+
+    <!-- ═══════════════════════════════════════════════════ MODAL: DETAILS -->
+    <div class="modal-overlay" id="modal-overlay" aria-hidden="true">
+        <div class="modal" id="modal-details" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <div class="modal__header">
+                <h2 class="modal__title" id="modal-title">Détails de l'événement</h2>
+                <button class="modal__close" id="modal-close" aria-label="Fermer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+            </div>
+            <div class="modal__body" id="modal-body">
+                <!-- Content injected by JS -->
+            </div>
+            <div class="modal__footer">
+                <button class="btn btn--ghost" id="modal-close-btn">Fermer</button>
+                <button class="btn btn--primary" id="modal-edit-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+          </svg>
+          Éditer
+        </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════ TOAST -->
+    <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+    <!-- ═══════════════════════════════════════════════════ JS -->
+
+    <script src="evntify.js"></script>
+
+</body>
+
+</html>
